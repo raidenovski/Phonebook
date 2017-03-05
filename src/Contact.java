@@ -7,10 +7,10 @@ public class Contact {
     private int number;
     private String email;
 
-    public Contact(String name, int number, String email){
+    public Contact(String name, int number){
         this.name = name;
         this.number = number;
-        this.email = email;
+        // this.email = email;
     }
 
     public void setName(String name) {
@@ -19,9 +19,9 @@ public class Contact {
     public void setNumber(int number) {
         this.number = number;
     }
-    public void setEmail(String email) {
+    /*public void setEmail(String email) {
         this.email = email;
-    }
+    }*/
 
     public String getName() {
         return this.name;
@@ -29,9 +29,9 @@ public class Contact {
     public int getNumber() {
         return this.number;
     }
-    public String getEmail() {
+    /*public String getEmail() {
         return this.email;
-    }
+    }*/
 
 
 }

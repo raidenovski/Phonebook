@@ -9,11 +9,20 @@ import java.util.ArrayList;
 public class Phonebook {
 
     private ArrayList<Contact> contactList;
-    static Scanner userInput = new Scanner(System.in);
+     ArrayList<String> menuOptions = new ArrayList<>();
+    static Scanner nameInput = new Scanner(System.in);
+    static Scanner numInput = new Scanner(System.in);
+
+    // why this doesn't work?
+    /*String option1 = " 1 - Add a contact"; menuOptions.add(option1);
+    String option2 = " 2 - Remove a contact";
+    String option3 = " 3 - Find a contact";
+    String option4 = " 4 - List all contacts";
+    String option5 = " 5 Dial a contact";*/
 
     public Phonebook() {
 
-        contactList = new ArrayList();
+        contactList = new ArrayList<>();
         System.out.println("Welcome to your phonebook");
         mainMenu();
     }
@@ -29,7 +38,7 @@ public class Phonebook {
         System.out.println();
         System.out.print("Select by number:");
 
-        int option = userInput.nextInt();
+        int option = numInput.nextInt();
 
         switch (option) {
             case 1: addContact(); break;
@@ -46,12 +55,20 @@ public class Phonebook {
         String contactName;
         int contactNum;
 
-        System.out.print("Name: ");
-        contactName = userInput.nextLine();
-        // userInput.next
+        while(true) {
+            System.out.print("Contact name: ");
+            contactName = nameInput.nextLine();
+
+            if (contactName.matches("[^([A-Za-z]{2,30})]")) {
+                System.out.println("Invalid name. Please try again");
+                continue;
+            }
+            break;
+        }
         System.out.print("Phone number: ");
-        contactNum = userInput.nextInt();
-        System.out.println("Adding " + contactName + " to the phonebook. Phone number is " + contactNum);
+        contactNum = numInput.nextInt();
+        System.out.println(contactNum + " is added to " + contactName);
+        contactList.add(new Contact(contactName, contactNum));
     }
 
     public void removeContact() {
@@ -63,7 +80,9 @@ public class Phonebook {
     }
 
     public void listAll() {
-        System.out.println("Listing all contacts...");
+        for (Contact i : contactList) {
+            System.out.println(i.getName() + " " + i.getNumber());
+        }
     }
 
     public void dialContact() {
