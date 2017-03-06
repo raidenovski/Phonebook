@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Phonebook {
 
     private ArrayList<Contact> contactList;
-     ArrayList<String> menuOptions = new ArrayList<>();
+    // ArrayList<String> menuOptions = new ArrayList<>();
     static Scanner nameInput = new Scanner(System.in);
     static Scanner numInput = new Scanner(System.in);
 
@@ -54,6 +54,16 @@ public class Phonebook {
     }
 
     public void addContact() {
+
+        String contactName = addContactName();
+
+        int contactNum = addContactNumber();
+
+        contactList.add(new Contact(contactName, contactNum));
+        System.out.println(contactNum + " is added to " + contactName);
+    }
+
+    private String addContactName() {
         String contactName;
 
         while(true) {
@@ -66,27 +76,27 @@ public class Phonebook {
             }
             break;
         }
+        return contactName;
+    }
 
-        boolean validPhoneNum = false;
+    private int addContactNumber() {
         int contactNum = 0;
 
-        while (!validPhoneNum) {
+        while (true) {
             System.out.print("Phone number: ");
             try {
                 contactNum = numInput.nextInt();
-                validPhoneNum = true;
+                int contactNumLength = String.valueOf(contactNum).length();
+                if ((contactNumLength < 5) || (contactNumLength > 15)) {
+                    System.out.println("Incorrect phone number length. Try again");
+                    continue;
+                }
+                break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid phone number format. Please try again.");
-                validPhoneNum = false;
-                numInput.nextLine();
-            }
-            if ((contactNum < 5) && (contactNum > 15)) {
-                System.out.println("Incorrect phone number length. Try again");
-                validPhoneNum = false;
             }
         }
-        System.out.println(contactNum + " is added to " + contactName);
-        contactList.add(new Contact(contactName, contactNum));
+        return contactNum;
     }
 
     public void removeContact() {
@@ -94,7 +104,24 @@ public class Phonebook {
     }
 
     public void findContact() {
-        System.out.println("Looking up for a contact...");
+        System.out.println("Enter to search...");
+        String toSearch = nameInput.nextLine().toLowerCase();
+        ArrayList<Contact> searchResults = new ArrayList<>();
+
+        for (Contact i : contactList) {
+
+            if ((i.getName().toLowerCase().contains(toSearch)) || (String.valueOf(i.getNumber()).contains(toSearch))) {
+                searchResults.add(i);
+            }
+        }
+        if (searchResults.size() > 0) {
+            for (Contact i : searchResults) {
+                System.out.println(i.getName() + ": " + i.getNumber());
+            }
+        } else {
+            System.out.println("No results found");
+        }
+
     }
 
     public void listAll() {
