@@ -2,6 +2,8 @@
  * Created by raiden on 3/4/17.
  */
 
+import java.beans.IndexedPropertyChangeEvent;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.*;
 import java.util.ArrayList;
@@ -53,20 +55,36 @@ public class Phonebook {
 
     public void addContact() {
         String contactName;
-        int contactNum;
 
         while(true) {
             System.out.print("Contact name: ");
             contactName = nameInput.nextLine();
 
-            if (contactName.matches("[^([A-Za-z]{2,30})]")) {
+            if (!(contactName.matches("([A-Za-z]{2,30})"))) {
                 System.out.println("Invalid name. Please try again");
                 continue;
             }
             break;
         }
-        System.out.print("Phone number: ");
-        contactNum = numInput.nextInt();
+
+        boolean validPhoneNum = false;
+        int contactNum = 0;
+
+        while (!validPhoneNum) {
+            System.out.print("Phone number: ");
+            try {
+                contactNum = numInput.nextInt();
+                validPhoneNum = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid phone number format. Please try again.");
+                validPhoneNum = false;
+                numInput.nextLine();
+            }
+            if ((contactNum < 5) && (contactNum > 15)) {
+                System.out.println("Incorrect phone number length. Try again");
+                validPhoneNum = false;
+            }
+        }
         System.out.println(contactNum + " is added to " + contactName);
         contactList.add(new Contact(contactName, contactNum));
     }
@@ -81,7 +99,7 @@ public class Phonebook {
 
     public void listAll() {
         for (Contact i : contactList) {
-            System.out.println(i.getName() + " " + i.getNumber());
+            System.out.println(i.getName() + ": " + i.getNumber());
         }
     }
 
