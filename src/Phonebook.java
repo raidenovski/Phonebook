@@ -65,7 +65,6 @@ public class Phonebook {
     public void addContact() {
 
         String contactName = addContactName();
-
         int contactNum = addContactNumber();
 
         contactList.add(new Contact(contactName, contactNum));
@@ -96,7 +95,7 @@ public class Phonebook {
             try {
                 contactNum = userNumInput.nextInt();
                 int contactNumLength = String.valueOf(contactNum).length();
-                if ((contactNumLength < 5) || (contactNumLength > 15)) {
+                if ((contactNumLength < 6) || (contactNumLength > 15)) {
                     System.out.println("Incorrect phone number length. Try again");
                     continue;
                 }
@@ -113,7 +112,11 @@ public class Phonebook {
     }
 
     public void findContact() {
-        System.out.println("Enter to search...");
+        searchContact();
+    }
+
+    private void searchContact() {
+        System.out.print("Enter a name or a number to search: ");
         String toSearch = userWordInput.nextLine().toLowerCase();
         ArrayList<Contact> searchResults = new ArrayList<>();
 
@@ -125,15 +128,15 @@ public class Phonebook {
         }
         if (searchResults.size() > 0) {
             for (Contact i : searchResults) {
-                if (searchResults.size() > 1) {
-                    System.out.println(searchResults.size() + " contacts found:");
-                } else {
-                    System.out.println("1 contact found");
-                }
                 System.out.println(i.getName() + ": " + i.getNumber());
             }
+            if (searchResults.size() > 1) {
+                System.out.println(searchResults.size() + " contacts found");
+            } else {
+                System.out.println("1 contact found");
+            }
         } else {
-            System.out.println("No results found");
+            System.out.println("No contacts found");
         }
 
     }
