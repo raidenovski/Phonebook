@@ -56,7 +56,7 @@ public class Phonebook {
                 default: return;
             }
         } catch (InputMismatchException e) {
-            System.out.println("Please use numbers to select options");
+            System.out.println("Please use numbers to select an option");
             userNumInput.nextLine();
         }
         mainMenu();
@@ -68,7 +68,7 @@ public class Phonebook {
         int contactNum = addContactNumber();
 
         contactList.add(new Contact(contactName, contactNum));
-        System.out.println(contactNum + " is added to " + contactName);
+        System.out.println(contactNum + " is added to contact " + contactName);
     }
 
     private String addContactName() {
@@ -102,6 +102,7 @@ public class Phonebook {
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid phone number format. Please try again.");
+                userNumInput.next();
             }
         }
         return contactNum;
@@ -132,7 +133,7 @@ public class Phonebook {
             }
             if (searchResults.size() > 1) {
                 System.out.println(searchResults.size() + " contacts found");
-            } else {
+            } else if (searchResults.size() == 1) {
                 System.out.println("1 contact found");
             }
         } else {
@@ -143,7 +144,7 @@ public class Phonebook {
 
     public void listAll() {
         System.out.println("Total contacts in phonebook: " + contactList.size());
-
+        // Make a comparator method to sort contacts by name
         for (Contact i : contactList) {
             System.out.println(i.getName() + ": " + i.getNumber());
         }
@@ -153,12 +154,10 @@ public class Phonebook {
         System.out.print("Enter a name or number to dial: ");
         String numToDial = userWordInput.nextLine();
         for (Contact i : contactList) {
-            if ((numToDial == i.getName()) || (numToDial == String.valueOf(i.getNumber()))) {
+            if ((numToDial.equalsIgnoreCase(i.getName())) || (numToDial.equalsIgnoreCase(String.valueOf(i.getNumber())))) {
                 System.out.println("Calling " + i.getName());
                 System.out.println("Dialing " + i.getNumber());
-            } else if ((numToDial.contains(i.getName())) || (numToDial.contains(String.valueOf(i.getNumber())))) {
-                System.out.println("Similar contact found: ");
-                System.out.println(i.getName() + " : " + i.getNumber()); // check this
+                break;
             } else {
                 System.out.println("No contacts found by that name/number");
             }
