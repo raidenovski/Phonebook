@@ -2,7 +2,7 @@
  * Created by raiden on 3/4/17.
  */
 
-import java.beans.IndexedPropertyChangeEvent;
+import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.*;
@@ -112,11 +112,11 @@ public class Phonebook {
     }
 
     public void findContact() {
-        searchContact();
+        System.out.print("Enter a name or a number to search: ");
+        searchContacts();
     }
 
-    private void searchContact() {
-        System.out.print("Enter a name or a number to search: ");
+    private ArrayList<Contact> searchContacts() {
         String toSearch = userWordInput.nextLine().toLowerCase();
         ArrayList<Contact> searchResults = new ArrayList<>();
 
@@ -138,17 +138,30 @@ public class Phonebook {
         } else {
             System.out.println("No contacts found");
         }
-
+        return searchResults;
     }
 
     public void listAll() {
         System.out.println("Total contacts in phonebook: " + contactList.size());
+
         for (Contact i : contactList) {
             System.out.println(i.getName() + ": " + i.getNumber());
         }
     }
 
     public void dialContact() {
-        System.out.println("Calling a contact...");
+        System.out.print("Enter a name or number to dial: ");
+        String numToDial = userWordInput.nextLine();
+        for (Contact i : contactList) {
+            if ((numToDial == i.getName()) || (numToDial == String.valueOf(i.getNumber()))) {
+                System.out.println("Calling " + i.getName());
+                System.out.println("Dialing " + i.getNumber());
+            } else if ((numToDial.contains(i.getName())) || (numToDial.contains(String.valueOf(i.getNumber())))) {
+                System.out.println("Similar contact found: ");
+                System.out.println(i.getName() + " : " + i.getNumber()); // check this
+            } else {
+                System.out.println("No contacts found by that name/number");
+            }
+        }
     }
 }
