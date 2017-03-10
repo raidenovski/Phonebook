@@ -1,6 +1,9 @@
 /**
  * Created by raiden on 3/4/17.
  */
+
+import java.util.Comparator;
+
 public class Contact {
 
     private String name;
@@ -33,4 +36,10 @@ public class Contact {
         return this.email;
     }*/
 
+    public static Comparator<Contact> contactComparator = new Comparator<Contact>() {
+        @Override
+        public int compare(Contact o1, Contact o2) {
+            return  (int) (o1.getName().compareTo(o2.getName()));
+        }
+    };
 }
