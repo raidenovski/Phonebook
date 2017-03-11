@@ -2,10 +2,8 @@
  * Created by raiden on 3/4/17.
  */
 
-import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.*;
 import java.util.ArrayList;
 
 public class Phonebook {
@@ -14,6 +12,7 @@ public class Phonebook {
     static Scanner userNumInput = new Scanner (System.in);
     ArrayList<String> menuOptions = new ArrayList<>();
     private ArrayList<Contact> contactList;
+    ContactSorter contactSorter;
 
     String option1 = " 1 - Add a contact";
     String option2 = " 2 - Remove a contact";
@@ -53,7 +52,7 @@ public class Phonebook {
                 case 4: listAll(); break;
                 case 5: dialContact(); break;
                 case 6: System.exit(0); break;
-                default: return;
+                default: break;
             }
         } catch (InputMismatchException e) {
             System.out.println("Please use numbers to select an option");
@@ -78,7 +77,7 @@ public class Phonebook {
             System.out.print("Contact name: ");
             contactName = userWordInput.nextLine();
 
-            if (!(contactName.matches("([A-Za-z]{2,30})"))) {
+            if (!(contactName.matches("([A-Za-z]{2,30}[ ]?[A-Za-z]{2,30})"))) {
                 System.out.println("Invalid name. Please try again");
                 continue;
             }
@@ -109,7 +108,14 @@ public class Phonebook {
     }
 
     public void removeContact() {
-        System.out.println("Removing a contact from the phonebook...");
+        System.out.print("Enter a contact name to remove: ");
+        String contactToRemove = userWordInput.nextLine();
+        for (Contact contact : contactList) {
+            if (contactToRemove.contains(contact.getName())) {
+                contactList.remove(contact);
+                System.out.println("Deleting " + contact.getName() + " from the phonebook");
+            }
+        }
     }
 
     public void findContact() {
@@ -143,8 +149,8 @@ public class Phonebook {
     }
 
     public void listAll() {
+        sortContacts();
         System.out.println("Total contacts in phonebook: " + contactList.size());
-        // Make a comparator method to sort contacts by name
         for (Contact i : contactList) {
             System.out.println(i.getName() + ": " + i.getNumber());
         }
@@ -153,14 +159,26 @@ public class Phonebook {
     public void dialContact() {
         System.out.print("Enter a name or number to dial: ");
         String numToDial = userWordInput.nextLine();
-        for (Contact i : contactList) {
-            if ((numToDial.equalsIgnoreCase(i.getName())) || (numToDial.equalsIgnoreCase(String.valueOf(i.getNumber())))) {
-                System.out.println("Calling " + i.getName());
-                System.out.println("Dialing " + i.getNumber());
-                break;
-            } else {
-                System.out.println("No contacts found by that name/number");
+        if (contactList.size() < 1) {
+            System.out.println("Your phonebook is empty. Add your friends so you can call them");
+        } else {
+            for (Contact i : contactList) {
+                if ((numToDial.equalsIgnoreCase(i.getName())) || (numToDial.equalsIgnoreCase(String.valueOf(i.getNumber())))) {
+                    System.out.println("Calling " + i.getName());
+                    System.out.println("Dialing " + i.getNumber());
+                    break;
+                } else {
+                    System.out.println("No contacts found by that name/number");
+                }
             }
+        }
+    }
+
+    private void sortContacts() {
+        try {
+            ArrayList<Contact> sortedContacts = contactSorter.getSortedList();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

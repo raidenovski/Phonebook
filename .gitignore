@@ -1,0 +1,6 @@
+# IntelliJ config files
+.idea/*
+Phonebook.iml
+
+# Production files
+/out/production/Phonebook/*
