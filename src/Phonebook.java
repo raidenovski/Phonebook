@@ -12,7 +12,6 @@ public class Phonebook {
     static Scanner userNumInput = new Scanner (System.in);
     ArrayList<String> menuOptions = new ArrayList<>();
     private ArrayList<Contact> contactList;
-    ContactSorter contactSorter;
 
     String option1 = " 1 - Add a contact";
     String option2 = " 2 - Remove a contact";
@@ -159,7 +158,7 @@ public class Phonebook {
     public void dialContact() {
         System.out.print("Enter a name or number to dial: ");
         String numToDial = userWordInput.nextLine();
-        if (contactList.size() < 1) {
+        if (contactList.isEmpty()) {
             System.out.println("Your phonebook is empty. Add your friends so you can call them");
         } else {
             for (Contact i : contactList) {
@@ -176,7 +175,7 @@ public class Phonebook {
 
     private void sortContacts() {
         try {
-            ArrayList<Contact> sortedContacts = contactSorter.getSortedList();
+            contactList = ContactSorter.getSortedList(contactList);
         } catch (Exception e) {
             e.printStackTrace();
         }
