@@ -76,7 +76,7 @@ public class Phonebook {
             System.out.print("Contact name: ");
             contactName = userWordInput.nextLine();
 
-            if (!(contactName.matches("([A-Za-z]{2,30}[ ]?[A-Za-z]{2,30})"))) {
+            if (!(contactName.matches("(([A-Za-z][ ]?){2,30})"))) {
                 System.out.println("Invalid name. Please try again");
                 continue;
             }
